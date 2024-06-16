@@ -4,12 +4,14 @@ import { useState, useEffect } from "react";
 import Head from "next/head";
 import Loading from "@/components/Loading";
 import Error from "@/components/Error";
+import Image from "next/image";
 
 
 interface DataItem {
   id: number;
   title: string;
   content: string;
+  imageUrl?: string;
 }
 
 
@@ -32,10 +34,10 @@ const fetchSecondaryData = async (): Promise<Partial<DataItem>[]> => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve([
-        { id: 1, content: "Updated content for item 1" },
-        { id: 2, content: "Updated content for item 2" },
-        { id: 3, content: "Updated content for item 3" },
-        { id: 4, content: "Updated content for item 4" },
+        { id: 1, content: "Updated content for item 1", imageUrl: "/images/scoop.webp" },
+        { id: 2, content: "Updated content for item 2", imageUrl: "/images/mix.webp" },
+        { id: 3, content: "Updated content for item 3", imageUrl: "/images/shake.webp" },
+        { id: 4, content: "Updated content for item 4", imageUrl: "/images/enjoy.webp" },
       ]);
     }, 500);
   });
@@ -47,6 +49,15 @@ const DisplayItem = ({ item }: { item: DataItem }) => {
     <li>
       <h2>{item.title}</h2>
       <p>{item.content}</p>
+      {item.imageUrl && (
+        <Image
+          src={item.imageUrl}
+          alt={item.title}
+          width={500}
+          height={500}
+          objectFit="cover"
+        />
+      )}
     </li>
   )
 }
