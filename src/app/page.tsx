@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Head from "next/head";
+import Loading from "@/components/Loading";
+import Error from "@/components/Error";
 
 
 interface DataItem {
@@ -11,6 +13,7 @@ interface DataItem {
 }
 
 
+// fetch primary text data
 const fetchPrimaryData = async (): Promise<DataItem[]> => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -24,7 +27,7 @@ const fetchPrimaryData = async (): Promise<DataItem[]> => {
   });
 };
 
-
+// fetch secondary image data
 const fetchSecondaryData = async (): Promise<Partial<DataItem>[]> => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -38,10 +41,21 @@ const fetchSecondaryData = async (): Promise<Partial<DataItem>[]> => {
   });
 };
 
+// Component to display a single combined text and image data
+const DisplayItem = ({ item }: { item: DataItem }) => {
+  return (
+    <li>
+      <h2>{item.title}</h2>
+      <p>{item.content}</p>
+    </li>
+  )
+}
 
+// Home page that displays list of <DataItem>s
 const Home = () => {
   const [data, setData] = useState<DataItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
 
   useEffect(() => {
@@ -62,6 +76,7 @@ const Home = () => {
         setData(combinedData);
       } catch (error) {
         console.error("Error fetching data:", error);
+        setError(true)
       } finally {
         setLoading(false);
       }
@@ -70,17 +85,6 @@ const Home = () => {
     loadData();
   }, []);
 
-
-  const DisplayItem = ({ item }: { item: DataItem }) => {
-    return (
-      <li>
-        <h2>{item.title}</h2>
-        <p>{item.content}</p>
-      </li>
-    )
-  }
-
-
   return (
     <div className="">
       <Head>
@@ -88,17 +92,18 @@ const Home = () => {
       </Head>
       <h1>Athletic Greens Example Page</h1>
       <main className="flex min-h-screen flex-col items-center justify-between p-24">
-        {loading ? <div>loading...</div> :
+        {error && <Error />}
+        {loading && <Loading />}
+        {!loading && !error && (
           <ul>
             {data.map((item) => (
               <DisplayItem key={item.id} item={item} />
             ))}
-          </ul>
-        }
+          </ul>)}
       </main>
     </div>
   );
 };
 
 
-export default Home;
+export default Home
