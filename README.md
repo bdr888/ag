@@ -1,3 +1,24 @@
+1. Data fetching performance improvements
+
+- The original code fetched and rendered the data and components on the client. I chose to move that work to the server to speed up performance and not avoid being subject to the client's network connection and device constraints. Using the server components [ has these additional performance benefits ](https://nextjs.org/docs/app/building-your-application/data-fetching/patterns#fetching-data-on-the-server).
+
+  - Additionally, I updated the loadData() function that mutates the primary data to use `Promise.all`. This will perform both the primary and secondary fetch operations in parallel instead of sequentially, reducing time needed to get and then display all the data together.
+
+  - Finally, I reduced the time complexity of the algorithm by first creating a map of the secondary data, then using `Array.get` to retrieve the corresponding item (the updated content).
+
+Depending on constraints, in a real world situation I might try to do this work on the server so we aren't at the mercy of a user's internet connection or device...TODO explain this more...
+
+2. UI improvements
+   Loading - set react loading state in load data function so we can use in the ui
+   Handle error - same as loading
+
+3. Images
+   Added images
+   Displayed responsively in reusable component
+   retained original content data in case, added imageurl to dataitem type
+
+4.
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
