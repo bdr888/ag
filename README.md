@@ -1,23 +1,36 @@
-1. Data fetching performance improvements
+### Data fetching performance improvements
+
+---
 
 - The original code fetched and rendered the data and components on the client. I chose to move that work to the server to speed up performance and not avoid being subject to the client's network connection and device constraints. Using the server components [ has these additional performance benefits ](https://nextjs.org/docs/app/building-your-application/data-fetching/patterns#fetching-data-on-the-server).
 
-  - Additionally, I updated the loadData() function that mutates the primary data to use `Promise.all`. This will perform both the primary and secondary fetch operations in parallel instead of sequentially, reducing time needed to get and then display all the data together.
+- Additionally, I updated the loadData() function that mutates the primary data to use `Promise.all`. This will perform both the primary and secondary fetch operations in parallel instead of sequentially, reducing time needed to get and then display all the data together.
 
-  - Finally, I reduced the time complexity of the algorithm by first creating a map of the secondary data, then using `Array.get` to retrieve the corresponding item (the updated content).
+- Finally, I reduced the time complexity of the algorithm by first creating a map of the secondary data, then using `Array.get` to retrieve the corresponding item (the updated content).
 
-Depending on constraints, in a real world situation I might try to do this work on the server so we aren't at the mercy of a user's internet connection or device...TODO explain this more...
+### Displaying images and custom component
 
-2. UI improvements
-   Loading - set react loading state in load data function so we can use in the ui
-   Handle error - same as loading
+---
 
-3. Images
-   Added images
-   Displayed responsively in reusable component
-   retained original content data in case, added imageurl to dataitem type
+- I created a reusable React component (<DataItemCard>) to display each item of data. The component takes in the a DataItem as a prop, and renders a styled list item.
 
-4.
+- The css in the parent list displays each item in a grid, and responsively handles the sizing and aspect ratio of the images for all viewport widths.
+
+### Future considerations
+
+---
+
+#### Handle errors and loading.
+
+- In a real world situation the data fetching functions should catch any errors, and error states should be handled with error boundaries so the user can continue to use the app without it crashing.
+
+- Similarly a loading state could be provided using React Suspense for any section of the UI that relies on data being fetched/mutated.
+
+#### Mobile first responsive design.
+
+- The design documents may not account for all viewport widths and device orientations. There are some gaps in the ranges of viewport widths. I would clarify the intended approach with the design team so that all widths and device orientations are accounted for. For instance, should the images be the same size within a range of viewport widths, or shoud the grow to fill the available space?
+
+---
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
