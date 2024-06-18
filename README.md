@@ -12,7 +12,7 @@
 
 ---
 
-- I created a reusable React component (<DataItemCard>) to display each item of data. The component takes in the a DataItem as a prop, and renders a styled list item.
+- I created a reusable React component to display each item of data. The component takes in the a DataItem as a prop, and renders a styled list item.
 
 - The css in the parent list displays each item in a grid, and responsively handles the sizing and aspect ratio of the images for all viewport widths.
 
